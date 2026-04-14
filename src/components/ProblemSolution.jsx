@@ -2,68 +2,72 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const ProblemSolution = ({ onAction }) => {
+  const points = [
+    {
+      before: "Fragmented signal in noisy social platforms.",
+      after: "Neural matching based on contextual social proximity.",
+      icon: "🧠"
+    },
+    {
+      before: "Waiting for 'happenstance' to strike.",
+      after: "Programmatic serendipity through graph orchestration.",
+      icon: "⚡"
+    },
+    {
+      before: "Opaque professional networks and references.",
+      after: "Transparent, AI-indexed affinity mapping.",
+      icon: "🛡️"
+    }
+  ];
+
   return (
-    <section id="engine" className="section-gap px-6">
+    <section className="py-64 px-10 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-clear-sky/5 blur-[250px] rounded-full pointer-events-none" />
+      
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-px bg-white/[0.05] rounded-[4rem] overflow-hidden border border-white/[0.05]">
-          {/* Status Quo */}
-          <div className="flex-1 p-16 lg:p-24 bg-background/50 backdrop-blur-3xl">
-            <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/20 mb-12 block">Terminal State</span>
-            <h3 className="text-4xl lg:text-5xl font-medium mb-12 tracking-[-0.03em] text-white/30 italic">Legacy networking is a game of noise.</h3>
-            
-            <div className="space-y-6">
-              {[
-                "Static profiles that decay in real-time",
-                "Cold outreach with diminishing returns",
-                "Algorithmic noise in professional feeds"
-              ].map((item, i) => (
-                <div key={i} className="flex gap-6 items-center opacity-20">
-                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                  <p className="text-lg font-light tracking-tight">{item}</p>
-                </div>
-              ))}
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
+          <div>
+            <span className="text-tulips text-[11px] font-bold tracking-[0.5em] uppercase mb-12 block">The Serendipity Engine</span>
+            <h2 className="text-7xl lg:text-[10rem] font-bold tracking-[-0.07em] mb-16 leading-[0.8] text-gradient">
+              The end of <br /> luck.
+            </h2>
+            <p className="text-2xl text-white/40 font-medium leading-relaxed mb-16 max-w-xl">
+              Luck is just a data set we haven't indexed yet. Happenstance turns chance into a repeatable orchestration.
+            </p>
+            <button 
+              onClick={() => onAction('Strategy')}
+              className="btn-secondary px-12 py-5"
+            >
+              The Science of Proximity
+            </button>
           </div>
 
-          {/* Transformation */}
-          <div className="flex-1 p-16 lg:p-24 bg-white/[0.02] relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-tulips/10 via-transparent to-transparent pointer-events-none" />
-            
-            <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-tulips mb-12 block">Optimal Path</span>
-            <h3 className="text-4xl lg:text-5xl font-medium mb-12 tracking-[-0.03em]">Foundra is a network of intent.</h3>
-            
-            <div className="space-y-6">
-              {[
-                "Predictive matching based on project DNA",
-                "Identity verification via technical proof",
-                "High-signal connectivity by default"
-              ].map((item, i) => (
-                <motion.div 
-                  key={i} 
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.8 }}
-                  className="flex gap-6 items-center cursor-pointer group"
-                  onClick={() => onAction(item)}
-                >
-                  <div className="w-2 h-2 rounded-full bg-tulips shadow-[0_0_10px_rgba(227,112,131,0.5)] group-hover:scale-150 transition-transform" />
-                  <p className="text-lg md:text-xl font-light tracking-tight group-hover:text-white transition-colors">{item}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <div 
-              className="mt-24 p-8 glass-card border-white/5 bg-white/[0.03] flex items-center justify-between cursor-pointer hover:bg-white/[0.05] transition-all"
-              onClick={() => onAction("Metric Analysis")}
-            >
-               <div className="flex -space-x-4">
-                  {[1,2,3,4].map(i => <div key={i} className="w-12 h-12 rounded-full bg-white/5 border-2 border-background" />)}
-               </div>
-               <div className="text-right">
-                  <p className="text-2xl font-bold tracking-tighter">0.05ms</p>
-                  <p className="text-[10px] uppercase tracking-widest text-white/20">Matching Latency</p>
-               </div>
-            </div>
+          <div className="space-y-6">
+            {points.map((point, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2, duration: 1 }}
+                className="glass-card spotlight-card p-12 group cursor-pointer"
+              >
+                <div className="flex gap-12">
+                  <div className="text-5xl opacity-40 group-hover:opacity-100 transition-opacity duration-700">{point.icon}</div>
+                  <div className="flex-1">
+                      <div className="flex items-center gap-6 mb-6">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/10 line-through">Legacy</span>
+                        <div className="h-px flex-1 bg-white/[0.05]" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-tulips">Next-Gen</span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                         <p className="text-lg text-white/20 font-medium leading-relaxed">{point.before}</p>
+                         <p className="text-lg text-white font-bold leading-relaxed">{point.after}</p>
+                      </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

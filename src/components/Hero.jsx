@@ -1,137 +1,115 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
-const placeholders = [
-  "AI SaaS for students",
-  "Looking for frontend dev",
-  "Build a Web3 gaming platform",
-  "Need a marketing co-founder",
-  "Next-gen logistics automation"
-];
+const NetworkNode = ({ x, y, delay }) => (
+  <motion.div 
+    className="absolute w-1 h-1 rounded-full bg-white z-10"
+    style={{ left: `${x}%`, top: `${y}%` }}
+    animate={{ 
+      scale: [1, 2, 1],
+      opacity: [0.1, 0.4, 0.1],
+      boxShadow: ["0 0 0px #fff", "0 0 10px #fff", "0 0 0px #fff"]
+    }}
+    transition={{ 
+      duration: 4,
+      repeat: Infinity,
+      delay: delay,
+      ease: "easeInOut"
+    }}
+  />
+);
 
 const Hero = ({ onAction }) => {
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const [isFocused, setIsFocused] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleSubmit = (e) => {
-    if (e.key === 'Enter' || e.type === 'click') {
-      if (inputValue.trim()) {
-        onAction(`Inquiry: ${inputValue}`);
-        setInputValue("");
-      }
-    }
-  };
+  const [query, setQuery] = useState('');
+  
+  const nodes = [
+    { x: 15, y: 20 }, { x: 30, y: 10 }, { x: 45, y: 30 },
+    { x: 60, y: 15 }, { x: 80, y: 25 }, { x: 10, y: 50 },
+    { x: 35, y: 45 }, { x: 55, y: 60 }, { x: 85, y: 40 }
+  ];
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 px-6 overflow-hidden grid-pattern">
-      {/* Dynamic Background Elements */}
-      <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-tulips/5 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none" />
+    <section className="min-h-screen pt-64 pb-32 px-10 relative flex flex-col items-center text-center overflow-hidden">
+      {/* Cinematic Star Field / Network */}
+      <div className="absolute inset-0 pointer-events-none">
+        {nodes.map((node, i) => (
+          <NetworkNode key={i} x={node.x} y={node.y} delay={i * 0.4} />
+        ))}
+      </div>
 
-      <div className="text-center max-w-5xl relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-white/5 bg-white/5 text-[11px] font-bold tracking-[0.3em] uppercase text-tulips/80 mb-12 shadow-2xl cursor-default">
-            Protocol 2.0 is live
-          </span>
-          <h1 className="text-7xl md:text-[7rem] font-medium mb-10 leading-[0.95] tracking-[-0.04em] text-gradient">
-            Build the <br className="hidden md:block" />
-            impossible.
-          </h1>
-        </motion.div>
-
-        <motion.p 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-lg md:text-xl text-white/40 mb-20 max-w-xl mx-auto font-light leading-relaxed"
-        >
-          AI-orchestrated matching for the next generation <br className="hidden md:block" /> of architects, engineers, and founders.
-        </motion.p>
-
-        {/* AI Input Box — Refined */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-2xl mx-auto"
-        >
-          <div className="premium-input-container group">
-            <input 
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleSubmit}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              className="bg-transparent border-none outline-none w-full text-xl font-light placeholder-white/10 relative z-10"
-              placeholder=""
-            />
-            
-            {!isFocused && !inputValue && (
-              <div className="absolute left-10 pointer-events-none overflow-hidden h-8">
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={placeholderIndex}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-white/20 text-xl font-light italic"
-                  >
-                    {placeholders[placeholderIndex]}...
-                  </motion.p>
-                </AnimatePresence>
-              </div>
-            )}
-            
-            <motion.div 
-               whileHover={{ scale: 1.1 }}
-               whileTap={{ scale: 0.95 }}
-               onClick={handleSubmit}
-               className="relative ml-4 w-12 h-12 rounded-full bg-white text-background flex items-center justify-center cursor-pointer shadow-2xl"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </motion.div>
+          <div className="flex justify-center mb-16">
+             <motion.div 
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               className="px-8 py-3 bg-white/[0.03] backdrop-blur-3xl border border-white/5 rounded-full"
+             >
+                <span className="text-white/40 text-[10px] font-bold uppercase tracking-[0.6em]">Neural Social Discovery 4.2</span>
+             </motion.div>
           </div>
           
-          <div className="mt-8 flex justify-center gap-10 text-[10px] uppercase tracking-[0.2em] font-bold text-white/20">
-             <span className="cursor-pointer hover:text-white transition-colors" onClick={() => onAction("Intent Matching")}>Intent Matching</span>
-             <span className="text-white/5">•</span>
-             <span className="cursor-pointer hover:text-white transition-colors" onClick={() => onAction("Identity Verification")}>Identity Verification</span>
-             <span className="text-white/5">•</span>
-             <span className="cursor-pointer hover:text-white transition-colors" onClick={() => onAction("Network Graph")}>Network Graph</span>
+          <h1 className="text-8xl md:text-[12rem] font-bold tracking-[-0.07em] mb-16 leading-[0.8] text-gradient">
+            Search your <br /> 
+            entire network.
+          </h1>
+          
+          <p className="text-2xl md:text-3xl text-white/40 font-medium max-w-3xl mx-auto leading-relaxed mb-24 tracking-tight">
+             Access thousands of verified connections across your social clusters instantly with natural language.
+          </p>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="premium-input-container group spotlight-card hover:bg-white/[0.05] transition-all duration-1000">
+              <div className="flex-shrink-0 mr-8 text-white/20 group-focus-within:text-tulips transition-colors">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m3 21 1.9-1.9"/><path d="M20.2 2.8C19.1 1.7 17.4 1.7 16.3 2.8L2.8 16.3C1.7 17.4 1.7 19.1 2.8 20.2 3.9 21.3 5.6 21.3 6.7 20.2L20.2 6.7C21.3 5.6 21.3 3.9 20.2 2.8Z"/><path d="m15.5 4.5 4 4"/><path d="m9 11 4 4"/></svg>
+              </div>
+              <input 
+                type="text" 
+                placeholder="Find a Series A founder in my network who loves Rust..." 
+                className="bg-transparent border-none outline-none w-full text-2xl md:text-3xl text-white placeholder-white/5 font-medium"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && onAction(`Query: ${query}`)}
+              />
+              <button 
+                onClick={() => onAction(`Query: ${query}`)}
+                className="btn-primary px-12 py-5 text-lg"
+              >
+                Discover
+              </button>
+            </div>
+            
+            <div className="mt-12 flex flex-wrap justify-center gap-12 text-[10px] font-bold uppercase tracking-[0.4em] text-white/20">
+               {['Cloud Architect', 'Founding Engineer', 'Product Partner'].map(tag => (
+                 <span key={tag} className="hover:text-white cursor-pointer transition-colors" onClick={() => setQuery(tag)}>{tag}</span>
+               ))}
+            </div>
           </div>
         </motion.div>
+      </div>
 
-        {/* Primary Action */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-          className="mt-24"
-        >
-           <div 
-             className="w-px h-24 bg-gradient-to-b from-tulips/50 to-transparent mx-auto relative cursor-pointer group"
-             onClick={() => document.getElementById('product')?.scrollIntoView({ behavior: 'smooth' })}
-           >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-tulips rounded-full blur-[2px] animate-bounce group-hover:blur-[8px] transition-all" />
-           </div>
-        </motion.div>
+      <div className="mt-64 w-full max-w-7xl mx-auto">
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-24" />
+        <div className="flex flex-wrap justify-center items-center gap-24 opacity-20 hover:opacity-100 transition-opacity duration-1000 grayscale">
+          <IntegrationLogo name="Gmail" icon="✉️" />
+          <IntegrationLogo name="LinkedIn" icon="💼" />
+          <IntegrationLogo name="Slack" icon="💬" />
+          <IntegrationLogo name="Twitter" icon="🐦" />
+        </div>
       </div>
     </section>
   );
 };
+
+const IntegrationLogo = ({ name, icon }) => (
+  <div className="flex items-center gap-4">
+    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-2xl">{icon}</div>
+    <span className="font-bold text-[11px] tracking-[0.3em] uppercase">{name}</span>
+  </div>
+);
 
 export default Hero;
