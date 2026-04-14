@@ -91,22 +91,37 @@ const Features = ({ onAction }) => {
                     key={fIdx}
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    whileHover={{ scale: 1.02, x: 10, backgroundColor: 'rgba(255,255,255,0.03)' }}
-                    transition={{ delay: fIdx * 0.05 }}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      x: 10, 
+                      z: 50,
+                      rotateX: -5,
+                      rotateY: 5,
+                      backgroundColor: 'rgba(255,255,255,0.03)' 
+                    }}
+                    transition={{ 
+                      delay: fIdx * 0.05,
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 17
+                    }}
                     onClick={() => toast.success(`Active Module: ${feature.name}`, {
                       description: `Handshaking with ${group.category} sub-system. Status: NOMINAL.`,
                       style: { background: '#0A0A0F', border: '1px solid rgba(227, 112, 131, 1)', color: '#fff' }
                     })}
                     className="p-10 border-b border-white/[0.05] last:border-none group cursor-pointer transition-all duration-500 relative overflow-hidden"
+                    style={{ transformStyle: "preserve-3d" }}
                   >
-                    <div className="absolute top-4 right-8 opacity-0 group-hover:opacity-20 text-[9px] font-mono text-white tracking-widest">LIVE_PROCESS_ID_{Math.floor(Math.random()*9000)+1000}</div>
+                    <div className="absolute top-4 right-8 opacity-0 group-hover:opacity-20 text-[9px] font-mono text-white tracking-widest" style={{ transform: "translateZ(20px)" }}>LIVE_PROCESS_ID_{Math.floor(Math.random()*9000)+1000}</div>
                     
-                    <h4 className="text-lg font-medium mb-2 group-hover:text-white transition-colors">{feature.name}</h4>
-                    <p className="text-[12px] text-white/30 font-light leading-relaxed group-hover:text-white/50 transition-colors">
-                      {feature.desc}
-                    </p>
+                    <div style={{ transform: "translateZ(30px)" }}>
+                      <h4 className="text-lg font-medium mb-2 group-hover:text-white transition-colors">{feature.name}</h4>
+                      <p className="text-[12px] text-white/30 font-light leading-relaxed group-hover:text-white/50 transition-colors">
+                        {feature.desc}
+                      </p>
+                    </div>
                     
-                    <div className="mt-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">
+                    <div className="mt-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0" style={{ transform: "translateZ(40px)" }}>
                        <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-meadow animate-pulse shadow-[0_0_10px_#a8bf8a]" />
                           <span className="text-[9px] uppercase tracking-widest text-meadow font-bold">Encrypted Link Active</span>
@@ -114,7 +129,6 @@ const Features = ({ onAction }) => {
                        <div className="w-1.5 h-1.5 rounded-full bg-tulips" />
                     </div>
 
-                    {/* Subtle Activity Line */}
                     <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tulips/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
                   </motion.div>
                 ))}

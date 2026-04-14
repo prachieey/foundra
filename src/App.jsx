@@ -9,6 +9,7 @@ import BuilderModes from './components/BuilderModes';
 import { SocialProof, CTA } from './components/SocialCTA';
 import Dashboard from './components/Dashboard';
 import CommandPalette from './components/CommandPalette';
+import Section3D from './components/Section3D';
 
 // Global action handler
 export const handleAction = (label) => {
@@ -29,9 +30,7 @@ function App() {
   
   // Advanced Parallax & Scroll Transforms
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.9]);
-
+  
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY });
@@ -44,6 +43,7 @@ function App() {
         e.preventDefault();
         setIsCommandOpen(prev => !prev);
       }
+      if (e.key === 'Escape') setIsCommandOpen(false);
     };
     window.addEventListener('keydown', handleKeyDown);
 
@@ -69,12 +69,15 @@ function App() {
     <div className="min-h-screen bg-background relative selection:bg-tulips/30 overflow-x-hidden">
       <Toaster position="bottom-right" theme="dark" />
       
-      {/* Global Command Palette */}
-      <CommandPalette 
-        isOpen={isCommandOpen} 
-        onClose={() => setIsCommandOpen(false)} 
-        onAction={handleCommand}
-      />
+      <AnimatePresence>
+        {isCommandOpen && (
+          <CommandPalette 
+            isOpen={isCommandOpen} 
+            onClose={() => setIsCommandOpen(false)} 
+            onAction={handleCommand}
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {view === 'landing' ? (
@@ -82,9 +85,10 @@ function App() {
             key="landing"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            exit={{ opacity: 0, rotateX: 20, z: -500, filter: "blur(20px)" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="relative"
+            style={{ perspective: "2000px", transformStyle: "preserve-3d" }}
           >
             {/* Parallax Background Grid */}
             <motion.div 
@@ -113,60 +117,37 @@ function App() {
             <Navbar onAction={() => setView('app')} />
             
             <main>
-              {/* Hero with dynamic parallax scale and opacity */}
-              <motion.div style={{ opacity: heroOpacity, scale: heroScale }}>
+              {/* 3D Scroll Powered Sections */}
+              <Section3D>
                  <Hero onAction={(label) => handleAction(label)} />
-              </motion.div>
+              </Section3D>
 
-              <div className="space-y-32">
-                <Features onAction={(label) => handleAction(label)} />
-                <ProblemSolution onAction={(label) => handleAction(label)} />
-                <BuilderModes onAction={(label) => handleAction(label)} />
-                <SocialProof onAction={(label) => handleAction(label)} />
-                <CTA onAction={() => setView('app')} />
+              <div className="space-y-48 pb-32">
+                <Section3D>
+                  <Features onAction={(label) => handleAction(label)} />
+                </Section3D>
+                
+                <Section3D>
+                  <ProblemSolution onAction={(label) => handleAction(label)} />
+                </Section3D>
+
+                <Section3D>
+                  <BuilderModes onAction={(label) => handleAction(label)} />
+                </Section3D>
+
+                <Section3D>
+                  <SocialProof onAction={(label) => handleAction(label)} />
+                </Section3D>
+
+                <Section3D>
+                  <CTA onAction={() => setView('app')} />
+                </Section3D>
               </div>
             </main>
 
-            {/* Simplified Modal */}
-            <AnimatePresence>
-              {isModalOpen && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-background/80 backdrop-blur-3xl"
-                  onClick={() => setIsModalOpen(false)}
-                >
-                  <motion.div 
-                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                    onClick={(e) => e.stopPropagation()}
-                    className="max-w-md w-full glass-card p-12 text-center"
-                  >
-                    <h3 className="text-3xl font-medium mb-4">Request Access</h3>
-                    <p className="text-white/40 mb-8 font-light">Enter your builder intent to join the exclusive Foundra ecosystem.</p>
-                    <input 
-                      type="email" 
-                      placeholder="name@company.com" 
-                      className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-4 mb-6 outline-none focus:border-tulips/50 transition-all"
-                    />
-                    <button 
-                      onClick={() => {
-                        toast.success("Welcome to the queue", { description: "We'll verify your architectural footprint soon." });
-                        setIsModalOpen(false);
-                      }}
-                      className="btn-primary w-full"
-                    >
-                      Submit Application
-                    </button>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <footer className="py-12 px-8 md:px-16 border-t border-white/5 bg-black/40 text-center">
-              <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <footer className="py-24 px-8 md:px-16 border-t border-white/5 bg-black/40 text-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-tulips/5 pointer-events-none" />
+              <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
                  <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-tulips rounded rotate-12 flex items-center justify-center">
                       <span className="text-white font-bold text-xs uppercase tracking-tighter">F</span>
@@ -174,7 +155,7 @@ function App() {
                   <span className="text-lg font-bold tracking-tight">Foundra</span>
                 </div>
                 <p className="text-white/20 text-sm">© 2026 Foundra Ecosystem. Built for the builders.</p>
-                <div className="flex gap-8 text-sm text-white/40 font-medium">
+                <div className="flex gap-8 text-sm text-white/40 font-medium font-mono uppercase tracking-widest">
                    <a href="#" className="hover:text-white transition-colors">Privacy</a>
                    <a href="#" className="hover:text-white transition-colors">Terms</a>
                    <a href="#" className="hover:text-white transition-colors">Twitter</a>
@@ -185,10 +166,10 @@ function App() {
         ) : (
           <motion.div
             key="dashboard"
-            initial={{ opacity: 0, scale: 0.9, filter: "blur(20px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            initial={{ opacity: 0, rotateX: -20, z: -500, filter: "blur(20px)" }}
+            animate={{ opacity: 1, rotateX: 0, z: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <Dashboard onBack={() => setView('landing')} />
           </motion.div>
@@ -203,8 +184,8 @@ function App() {
         className="fixed bottom-10 left-10 z-[100] hidden md:flex items-center gap-3 text-[10px] text-white/20 font-bold uppercase tracking-widest cursor-pointer hover:text-white transition-all group"
         onClick={() => setIsCommandOpen(true)}
       >
-        <div className="px-2 py-1 border border-white/10 rounded-md bg-white/5 group-hover:border-tulips/50">⌘ K</div>
-        <span>Quick Command</span>
+        <div className="px-2 py-1 border border-white/10 rounded-md bg-white/5 group-hover:border-tulips/50 transition-all">⌘ K</div>
+        <span className="group-hover:tracking-[0.2em] transition-all">Quick Command Engine</span>
       </motion.div>
     </div>
   );
