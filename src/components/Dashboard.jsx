@@ -109,7 +109,7 @@ const Dashboard = ({ onBack }) => {
               </div>
 
               <div className="col-span-12 lg:col-span-4 flex flex-col gap-8">
-                 <div className="glass-card p-8 flex-1">
+                 <div className="glass-card spotlight-card p-8 flex-1">
                     <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-tulips mb-8">Intent Intelligence</h3>
                     <div className="space-y-6">
                        {["Predictive Stack Alignment", "Churn-Risk Monitor", "Sprint Orchestrator", "Market Pulse AI"].map((f, i) => (

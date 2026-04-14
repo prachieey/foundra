@@ -109,7 +109,7 @@ const Features = ({ onAction }) => {
                       description: `Handshaking with ${group.category} sub-system. Status: NOMINAL.`,
                       style: { background: '#0A0A0F', border: '1px solid rgba(227, 112, 131, 1)', color: '#fff' }
                     })}
-                    className="p-10 border-b border-white/[0.05] last:border-none group cursor-pointer transition-all duration-500 relative overflow-hidden"
+                    className="p-10 border-b border-white/[0.05] last:border-none group spotlight-card cursor-pointer transition-all duration-500 relative overflow-hidden"
                     style={{ transformStyle: "preserve-3d" }}
                   >
                     <div className="absolute top-4 right-8 opacity-0 group-hover:opacity-20 text-[9px] font-mono text-white tracking-widest" style={{ transform: "translateZ(20px)" }}>LIVE_PROCESS_ID_{Math.floor(Math.random()*9000)+1000}</div>

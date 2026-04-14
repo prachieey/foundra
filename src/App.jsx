@@ -34,6 +34,10 @@ function App() {
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY });
+      
+      // Inject global spotlight variables
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
     };
     window.addEventListener('mousemove', handleMouseMove);
     

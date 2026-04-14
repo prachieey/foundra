@@ -43,7 +43,7 @@ const BuilderModes = ({ onAction }) => {
               key={i}
               whileHover={{ y: -10 }}
               onClick={() => onAction(mode.title)}
-              className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden group cursor-pointer border border-white/5 active:scale-105 transition-transform duration-300"
+              className="relative spotlight-card aspect-[4/5] rounded-[2.5rem] overflow-hidden group cursor-pointer border border-white/5 active:scale-105 transition-transform duration-300"
             >
               <img 
                 src={mode.image} 

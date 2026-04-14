@@ -22,6 +22,30 @@
     @apply border-white/[0.1] bg-white/[0.05] shadow-[0_20px_80px_-20px_rgba(0,0,0,0.5)];
   }
 
+  .spotlight-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spotlight-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: radial-gradient(
+      600px circle at var(--mouse-x) var(--mouse-y),
+      rgba(227, 112, 131, 0.12),
+      transparent 40%
+    );
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+
   .premium-input-container {
     @apply relative flex items-center bg-white/[0.03] border border-white/[0.08] px-10 py-6 rounded-[3rem] transition-all duration-700 focus-within:border-tulips/40 focus-within:bg-white/[0.05] focus-within:shadow-[0_0_50px_-10px_rgba(227,112,131,0.2)];
   }
